@@ -20,7 +20,7 @@
       </VBox>
    </left>
    <center>
-      <AnchorPane fx:id="anchorPane" prefHeight="398.0" prefWidth="502.0" style="-fx-background-color: #F9F871; -fx-background-image: /book.png;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchorPane" prefHeight="398.0" prefWidth="502.0" style="-fx-background-color: #F9F871;" BorderPane.alignment="CENTER">
          <children>
             <Text fx:id="imePredmeta" layoutX="20.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izberi predmet">
                <font>
