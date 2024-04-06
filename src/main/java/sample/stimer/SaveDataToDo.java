@@ -37,8 +37,9 @@ public class SaveDataToDo {
         }
     }
 
-    public static void deleteOpravilo(String predmet, String opravilo, ListView<String> toDdListView) {
+    public static void deleteOpravilo(String predmet, String opravilo) {
         File f = new File("src/main/resources/"+predmet+".txt");
+
         try {
             BufferedReader file = new BufferedReader(new FileReader(f));
             StringBuffer inputBuffer = new StringBuffer();
@@ -48,13 +49,15 @@ public class SaveDataToDo {
                 if (!line.contains(opravilo)) {
                     inputBuffer.append(line);
                     inputBuffer.append('\n');
+                    System.out.println(line);
+                    System.out.println(opravilo);
                 }
             }
             file.close();
             FileOutputStream fileOut = new FileOutputStream(f);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
-            toDdListView.getItems().remove(opravilo);
+
 
         } catch (Exception e) {
             System.out.println("Problem reading file. " + f.getAbsolutePath());
