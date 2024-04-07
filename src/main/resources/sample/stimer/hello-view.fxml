@@ -66,7 +66,7 @@
       </VBox>
    </right>
    <top>
-      <HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #86A8E7;" BorderPane.alignment="CENTER">
          <children>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0">
                <children>
@@ -80,7 +80,7 @@
                                  </font>
                               </Label>
                               <Button fx:id="addNewPredmetButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" />
-                              <Button fx:id="deleteButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dellPredmet" text="DELL" />
+                              <Button fx:id="deleteButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dellPredmet" text="DEL" />
                            </children>
                         </HBox>
                         <TextField fx:id="addNewPredmetField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" visible="false" />
@@ -94,9 +94,9 @@
                      <children>
                         <HBox minWidth="-Infinity" prefHeight="30.0" prefWidth="264.0">
                            <children>
-                              <Button fx:id="deleteToDoButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dellToDo" text="DELL" />
+                              <Button fx:id="deleteToDoButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dellToDo" text="DEL" />
                               <Button fx:id="addNewToDoButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addNewToDo" text="ADD" />
-                              <Button fx:id="checkUncheckButton" layoutX="52.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkUncheckToDo" text="K" />
+                              <Button fx:id="checkUncheckButton" layoutX="52.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkUncheckToDo" text="✓" />
                               <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="124.0" text="OPRAVILA">
                                  <font>
                                     <Font name="Arial Nova" size="24.0" />
