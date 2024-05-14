@@ -1,15 +1,20 @@
 package sample.stimer;
-/*
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,29 +22,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class HelloController {
+
+public class PredmetController {
+
     private SaveData db = new SaveData(new File("src/main/resources/data.txt"));
-    private boolean addNewPredmetClicked = false;
+
     private boolean addNewToDoClicked = false;
     private String currentPredmet;
-    private String[] listPredmeti;
     private String[] listToDo;
     private long timestamp;
 
+    PredmetHolder predmetHolder = PredmetHolder.getInstance();
 
-    private  Timer timer;
-    private boolean isPaused = false;
-    private boolean startStopTimerClicked = false;
-    private int timerPrev;
-
-    @FXML
-    private Button startEndTimerButton;
-    @FXML
-    private TextField addNewPredmetField;
-    @FXML
-    private Button addNewPredmetButton;
-    @FXML
-    private Button deleteButton;
     @FXML
     private TextField addNewToDoField;
     @FXML
@@ -53,11 +47,11 @@ public class HelloController {
     @FXML
     private Text casUcenja;
     @FXML
-    private ListView<String> listView;
-    @FXML
     private ListView<String> toDdListView;
     @FXML
-    private Label Predmeti;
+    private Button sceneChangeButton;
+    String curentOpravilo;
+
 
     @FXML
     private TextField UreField;
@@ -66,22 +60,25 @@ public class HelloController {
     @FXML
     private TextField SekundeField;
     @FXML
-    private HBox TimerBox;
-    @FXML
-    private AnchorPane anchorPane;
+    private Button startEndTimerButton;
 
+    private  Timer timer;
+    private boolean isPaused = false;
+    private boolean startStopTimerClicked = false;
+    private int timerPrev;
     int ure, minute, sekunde;
-    String checkuncheck;
 
-
-
-
-    public HelloController() throws IOException {
+    public PredmetController() throws IOException {
     }
 
     @FXML
     private void initialize() {
+        currentPredmet = predmetHolder.getPredmet();
 
+        imePredmeta.setText(currentPredmet);
+
+        toDdListView.getItems().clear();
+        toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
 
         SekundeField.setOnMouseClicked(event -> {
             SekundeField.clear();
@@ -137,68 +134,9 @@ public class HelloController {
             }
         });
 
-
-        // Initialize the list of predmeti and populate the ListView
-        listPredmeti = db.getArrayListPredmetov().toArray(new String[0]);
-        listView.getItems().addAll(listPredmeti);
-
-        // Add a listener to handle selection changes in the ListView
-        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                currentPredmet = listView.getSelectionModel().getSelectedItem();
-                imePredmeta.setText(currentPredmet);
-                casUcenja.setVisible(true);
-                updateTime();
-                toDdListView.getItems().clear();
-                toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
-                checkUncheckButton.setDisable(false);
-                checkUncheckButton.setVisible(true);
-                checkUncheckButton.setText("☑");
-                addNewToDoButton.setDisable(false);
-                addNewToDoButton.setVisible(true);
-                deleteToDoButton.setDisable(false);
-                deleteToDoButton.setVisible(true);
-                deleteButton.setVisible(true);
-                casUcenja.setVisible(true);
-                TimerBox.setVisible(true);
-
-            }
-        });
-
-
+        updateTime();
     }
 
-    @FXML
-    private void addNewPredmet() {
-        if (!addNewPredmetClicked) {
-            // Enable the text field for adding a new predmet
-            addNewPredmetClicked = true;
-            addNewPredmetField.setVisible(true);
-            addNewPredmetField.setDisable(false);
-        } else {
-            // Add the new predmet to the database and update UI
-            String newPredmet = addNewPredmetField.getText();
-           if (!newPredmet.equals("")){
-               db.newPredmet(newPredmet);
-               listView.getItems().add(newPredmet);
-               System.out.println(newPredmet);
-               addNewPredmetField.clear();
-               addNewPredmetField.setVisible(false);
-               addNewPredmetField.setDisable(true);
-               addNewPredmetClicked = false;
-           }
-
-        }
-    }
-
-    @FXML
-    private void dellPredmet() {
-        String delPredmet = imePredmeta.getText();
-        db.delete(delPredmet);
-        listView.getItems().remove(delPredmet);
-
-    }
 
     @FXML
     private void addNewToDo() {
@@ -223,18 +161,25 @@ public class HelloController {
 
     @FXML
     private void dellToDo() {
-        String brisanOpravilo = toDdListView.getSelectionModel().getSelectedItem().replaceAll("[☐☑] ","");
-        SaveDataToDo.deleteOpravilo(currentPredmet, brisanOpravilo);
-        toDdListView.getItems().clear();
-        toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
+        if (toDdListView.getSelectionModel().getSelectedItem() != null) {
+            String brisanOpravilo = toDdListView.getSelectionModel().getSelectedItem().replaceAll("[☐☑] ", "");
+            System.out.println(brisanOpravilo);
+            SaveDataToDo.deleteOpravilo(currentPredmet, brisanOpravilo);
+            toDdListView.getItems().clear();
+            toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
+        }
     }
 
     @FXML
     private void checkUncheckToDo() {
+
         if (toDdListView.getSelectionModel().getSelectedItem() != null) {
-            checkuncheck = toDdListView.getSelectionModel().getSelectedItem();
+            curentOpravilo = toDdListView.getSelectionModel().getSelectedItem().replaceAll("[☐☑] ","");
+            System.out.println(curentOpravilo);
+            SaveDataToDo.checkUncheck(currentPredmet,curentOpravilo);
+            toDdListView.getItems().clear();
+            toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
         }
-        SaveDataToDo.checkUncheck(currentPredmet, checkuncheck, toDdListView);
     }
 
 
@@ -250,7 +195,14 @@ public class HelloController {
         casUcenja.setText(formattedTime);
     }
 
-
+    @FXML
+    private void sceneChangeToStart(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("start-view.fxml"));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @FXML
     private void startTimer() {
@@ -259,7 +211,7 @@ public class HelloController {
         ure = Integer.parseInt(UreField.getText());
         timerPrev = sekunde+60*minute+360*ure;
 
-                timer = new Timer();
+        timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -298,7 +250,6 @@ public class HelloController {
                         MinureField.setText("00");
                         UreField.setText("00");
                         startEndTimerButton.setText("start");
-                        listView.setDisable(false);
                         timer.cancel();
                         timer.purge();
                     });
@@ -315,7 +266,6 @@ public class HelloController {
             startTimer();
             startEndTimerButton.setText("End");
             startStopTimerClicked = true;
-            listView.setDisable(true);
             SekundeField.setDisable(true);
             MinureField.setDisable(true);
             UreField.setDisable(true);
@@ -332,11 +282,12 @@ public class HelloController {
             SekundeField.setText("00");
             MinureField.setText("00");
             UreField.setText("00");
-            listView.setDisable(false);
             startStopTimerClicked = false;
             timer.cancel();
             timer.purge();
-            listView.setDisable(false);
+            SekundeField.setOpacity(0.5);
+            MinureField.setOpacity(0.5);
+            UreField.setOpacity(0.5);
             SekundeField.setDisable(false);
             MinureField.setDisable(false);
             UreField.setDisable(false);
@@ -349,4 +300,14 @@ public class HelloController {
 
 
 
-}*/
+}
+
+
+
+
+
+
+
+
+
+

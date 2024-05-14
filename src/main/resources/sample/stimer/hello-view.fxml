@@ -31,7 +31,7 @@
                   <Font name="Arial Nova Bold" size="23.0" />
                </font>
             </Text>
-            <HBox fx:id="TimerBox" layoutX="10.0" layoutY="166.0" prefHeight="80.0" prefWidth="240.0" style="-fx-border-color: #86A8E7; -fx-border-width: 4; -fx-border-radius: 4;" visible="false">
+            <HBox fx:id="TimerBox" layoutX="10.0" layoutY="166.0" prefHeight="80.0" prefWidth="240.0" style="-fx-border-color: #86A8E7; -fx-border-width: 4; -fx-border-radius: 4;">
                <children>
                   <TextField fx:id="UreField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" text="00">
                      <font>

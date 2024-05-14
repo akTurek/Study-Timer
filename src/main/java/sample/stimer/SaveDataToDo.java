@@ -39,6 +39,7 @@ public class SaveDataToDo {
 
     public static void deleteOpravilo(String predmet, String opravilo) {
         File f = new File("src/main/resources/"+predmet+".txt");
+        System.out.println("backend oprvilo "+ opravilo);
 
         try {
             BufferedReader file = new BufferedReader(new FileReader(f));
@@ -46,11 +47,11 @@ public class SaveDataToDo {
             String line;
 
             while ((line = file.readLine()) != null) {
-                if (!line.contains(opravilo)) {
+                if (!line.equals(opravilo+"@0") &&  !line.equals(opravilo+"@1")) {
                     inputBuffer.append(line);
                     inputBuffer.append('\n');
-                    System.out.println(line);
-                    System.out.println(opravilo);
+                }else {
+                    System.out.println("backendizbris "+line);
                 }
             }
             file.close();
@@ -89,10 +90,38 @@ public class SaveDataToDo {
         return arrayListOpravil.toArray(new String[0]);
     }
 
+    public static int[] opravljenaNeopravljenaPieChart(ArrayList<String> arrayListPredmetov) {
 
-    public static void checkUncheck (String predmet, String currentOpravilo, ListView<String> toDdListView) {
+        int [] opravljeniNeopravljeni =new int[]{0,0};
+        for (String element : arrayListPredmetov) {
+            File f = new File("src/main/resources/"+element+".txt");
+            try {
+                BufferedReader file = new BufferedReader(new FileReader(f));
+                String line;
+
+                while ((line = file.readLine()) != null) {
+                    String[] newLineArray = line.split("@");
+                    if (newLineArray[1].equals("1")) {
+                        opravljeniNeopravljeni[0]++;
+                    } else {
+                        opravljeniNeopravljeni[1]++;
+                    }
+
+                }
+                file.close();
+
+            } catch (Exception e) {
+                System.out.println("Problem reading file. " + f.getAbsolutePath());
+                return null;
+            }
+        }
+        return opravljeniNeopravljeni;
+    }
+
+
+    public static void checkUncheck (String predmet, String currentOpravilo) {
         String opravilo = currentOpravilo.replaceAll("[☐☑] ","");
-        System.out.println(opravilo);
+        System.out.println("backend "+opravilo);
         File f = new File("src/main/resources/"+predmet+".txt");
 
         try {
@@ -101,12 +130,14 @@ public class SaveDataToDo {
             String line;
 
             while ((line = file.readLine()) != null) {
-                if (line.contains(opravilo)) {
+                if (line.equals(opravilo+"@0") || line.equals(opravilo+"@1")) {
                     String[] newLineArray = line.split("@");
                     if (newLineArray[1].equals("1")) {
                         line = opravilo+"@0";
+                        System.out.println("dal na 0");
                     } else {
                         line = opravilo+"@1";
+                        System.out.println("dal na 1");
                     }
                 }
                 inputBuffer.append(line);
@@ -119,9 +150,6 @@ public class SaveDataToDo {
             FileOutputStream fileOut = new FileOutputStream(f);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
-            toDdListView.getItems().clear();
-            toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(predmet));
-
 
         } catch (IOException e) {
             System.out.println("Problem reading or creating file. " + f.getAbsolutePath());

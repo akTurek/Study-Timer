@@ -11,6 +11,8 @@ public class SaveData {
     private int numOfPredmetov;
 
     private ArrayList<String> arrayListPredmetov;
+    private ArrayList<Integer> arrayListPredmetovCas;
+
 
 
     public SaveData(File data) throws IOException {
@@ -24,6 +26,7 @@ public class SaveData {
         this.data = data;
         this.numOfPredmetov = this.numOfPredmetovFun();
         this.arrayListPredmetov = arrayOfPredmetov();
+        //this.arrayListPredmetovCas = arrayOfCas();
     }
 
 
@@ -63,6 +66,7 @@ public class SaveData {
         } catch (Exception e) {
             System.out.println("Problem reading file. " + data.getAbsolutePath());
         }
+
     }
 
     public void updateTime(String predmet, int time) {
@@ -126,6 +130,7 @@ public class SaveData {
             FileWriter myWriter = new FileWriter(data);
             myWriter.write("");
             myWriter.close();
+            numOfPredmetov = 0;
             arrayListPredmetov = null;
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -184,6 +189,7 @@ public class SaveData {
             while ((line = file.readLine()) != null) {
                 if (line.contains(predmet)) {
                     String[] newLineArray = line.split("@");
+
                     return Integer.parseInt(newLineArray[1]);
                 }
             }
@@ -194,4 +200,27 @@ public class SaveData {
         }
         return 0;
     }
+
+     public int [] getArrayOfCas (){
+        int [] arrayCas = new int[arrayListPredmetov.size()];
+        int c = 0;
+        try {
+            BufferedReader file = new BufferedReader(new FileReader(data));
+            String line;
+
+            while ((line = file.readLine()) != null) {
+                String[] newLineArray = line.split("@");
+                arrayCas[c] = Integer.parseInt(newLineArray[1]);
+                c++;
+
+            }
+            file.close();
+
+        } catch (Exception e) {
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
+            return null;
+        }
+        return arrayCas;
+    }
+
 }
