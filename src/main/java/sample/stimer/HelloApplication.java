@@ -28,13 +28,16 @@ public class HelloApplication extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("start-view.fxml"));
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("style.css");
         stage.setTitle("Study Timer");
         Image icon = new Image(getClass().getResourceAsStream("/book.png"));
 
         stage.getIcons().add(icon);
         stage.setScene(scene);
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.show();
+        scene.getStylesheets().add("style.css");
+
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

@@ -20,13 +20,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 
 public class StartController {
-    private SaveData db = new SaveData(new File("src/main/resources/data.txt"));
+    private SaveData db = new SaveData();
     private boolean addNewPredmetClicked = false;
 
 
@@ -44,8 +45,6 @@ public class StartController {
     @FXML
     private Button addNewPredmetButton;
     @FXML
-    private Button deletePredmetButton;
-    @FXML
     private Text casUcenja;
     @FXML
     private ListView<String> listView;
@@ -54,11 +53,14 @@ public class StartController {
     @FXML
     private Button sceneChangeButton;
     @FXML
+    private HBox  hBox;
+    @FXML
     private CategoryAxis xAxis = new CategoryAxis();
     @FXML
     private NumberAxis yAxis = new NumberAxis();
     @FXML
-    private BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);;
+    private BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+
 
 
     public StartController() throws IOException {
@@ -67,7 +69,9 @@ public class StartController {
         @FXML
         private void initialize() {
             listPredmeti = db.getArrayListPredmetov().toArray(new String[0]);
+
             listView.getItems().addAll(listPredmeti);
+            listView.getSelectionModel().clearSelection();
 
             // Add a listener to handle selection changes in the ListView
             listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -75,7 +79,11 @@ public class StartController {
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     currentPredmet = listView.getSelectionModel().getSelectedItem();
                     predmetHolder.setPredmet(currentPredmet);
-
+                    try {
+                        sceneChangeToPredmet();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
 
@@ -109,38 +117,39 @@ public class StartController {
         }
     }
 
-    @FXML
-    private void dellPredmet() {
 
-        db.delete(currentPredmet);
-        listView.getItems().remove(currentPredmet);
-
-    }
 
     @FXML
-    private void updateTime(){
-        int input = db.timeUcenja(currentPredmet);
+    private String updateTime(){
+        String barCharNaslov;
+        int [] casArrray = db.getArrayOfCas();
+        int input = 0;
+        for (int i = 0; i < db.getArrayOfCas().length; i++) {
+            input += casArrray[i];
+        }
         int numberOfDays = input / 86400;
         int numberOfHours = (input % 86400) / 3600 ;
         int numberOfMinutes = ((input % 86400) % 3600) / 60;
         int numberOfSeconds = ((input % 86400) % 3600) % 60;
         String formattedTime = String.format("Cas ucenja: \n%d dni, %d ur, %d min, %d sec",
                 numberOfDays, numberOfHours, numberOfMinutes, numberOfSeconds);
-        casUcenja.setText(formattedTime);
+        barCharNaslov = formattedTime;
+        return barCharNaslov;
     }
 
     @FXML
     private void updateNapredek() {
-        napredek = String.format("Opravljeni: %d Neopravljeni: %d", arrayNapredka[0], arrayNapredka[1]);
+        napredek = String.format("%d / %d", arrayNapredka[0], arrayNapredka[0] + arrayNapredka[1]);
     }
 
 
 
     @FXML
-    private void sceneChangeToPredmet (ActionEvent event) throws IOException {
+    private void sceneChangeToPredmet () throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("predmet-view.fxml"));
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) listView.getScene().getWindow();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("style.css");
         stage.setScene(scene);
         stage.show();
     }
@@ -155,22 +164,9 @@ public class StartController {
         pieChart.getData().addAll(podatkiGrafa);
         pieChart.setTitle(napredek);
         pieChart.setLabelsVisible(false);
-        pieChart.setLegendVisible(false);
-        applyCustomColorSequence(pieChart.getData());
 
     }
 
-    private void applyCustomColorSequence(ObservableList<PieChart.Data> pieChartData) {
-        int i = 0;
-        for (PieChart.Data data : pieChartData) {
-            if (i == 0) {
-                data.getNode().setStyle("-fx-pie-color: green;");
-            } else {
-                data.getNode().setStyle("-fx-pie-color: red;");
-            }
-            i++;
-        }
-    }
 
     @FXML
     private void drawBarChart(){
@@ -178,20 +174,19 @@ public class StartController {
 
         xAxis.setLabel("Predmeti");
         yAxis.setLabel("Cas");
-        barChart.setTitle("Primer Bar Charta");
+        barChart.setTitle(updateTime());
 
         // Ustvarite serije podatkov
         XYChart.Series<String, Number> dataSeries1 = new XYChart.Series<>();
-        dataSeries1.setName("Serija 1");
+        dataSeries1.setName("Minute ucenja");
 
         for (int i = 0; i < listPredmetovCas.length; i++) {
             System.out.print(listPredmeti[i]);
             System.out.print(listPredmetovCas[i]);
             System.out.println();
-            dataSeries1.getData().add(new XYChart.Data<>(listPredmeti[i], listPredmetovCas[i]));
+            dataSeries1.getData().add(new XYChart.Data<>(listPredmeti[i], (int)(listPredmetovCas[i]/60)));
         }
 
-        // Dodajte serije podatkov v graf
         barChart.getData().addAll(dataSeries1);
 
 

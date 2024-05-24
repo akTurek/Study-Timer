@@ -7,23 +7,19 @@ import java.util.ArrayList;
 public class SaveData {
     //ImePredmeta@casVsekundah
 
-    private File data;
+    private File dir = new File("C:\\StudyBudy");
     private int numOfPredmetov;
-
+    private File data = new File("C:\\StudyBudy\\data.txt");
     private ArrayList<String> arrayListPredmetov;
     private ArrayList<Integer> arrayListPredmetovCas;
 
 
 
-    public SaveData(File data) throws IOException {
-        if (!data.exists()) {
-            if (data.createNewFile()) {
-                System.out.println("File created: " + data.getAbsolutePath());
-            } else {
-                throw new IOException("Failed to create file: " + data.getAbsolutePath());
-            }
-        }
-        this.data = data;
+    public SaveData() throws IOException {
+
+        checkDir();
+        checkFileData();
+        checkFilePredmetov();
         this.numOfPredmetov = this.numOfPredmetovFun();
         this.arrayListPredmetov = arrayOfPredmetov();
         //this.arrayListPredmetovCas = arrayOfCas();
@@ -37,6 +33,36 @@ public class SaveData {
     public ArrayList<String> getArrayListPredmetov() {
         return arrayListPredmetov;
     }
+
+    public void checkDir() throws IOException {
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                throw new IOException("Failed to create directory: " + dir.getAbsolutePath());
+            }
+        }
+    }
+
+    public void checkFileData() throws IOException {
+        if (!data.exists()) {
+            if (!data.createNewFile()) {
+                throw new IOException("Failed to create file: " + data.getAbsolutePath());
+            }
+        }
+    }
+
+    public void checkFilePredmetov() throws IOException {
+        if (arrayListPredmetov != null) {
+            for (String predmet : arrayListPredmetov) {
+                File file = new File("C:\\StudyBudy\\" + predmet + ".txt");
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        throw new IOException("Failed to create file: " + file.getAbsolutePath());
+                    }
+                }
+            }
+        }
+    }
+
 
     public void newPredmet(String predmet) {
         try {
@@ -59,7 +85,7 @@ public class SaveData {
             fileOut.close();
             numOfPredmetov++;
             arrayListPredmetov.add(predmet);
-            File f = new File("src/main/resources/"+predmet+".txt");
+            File f = new File("C:\\StudyBudy\\"+predmet+".txt");
             f.createNewFile();
             System.out.println(f.getAbsolutePath());
 
@@ -116,7 +142,7 @@ public class SaveData {
             fileOut.close();
             numOfPredmetov--;
             arrayListPredmetov.remove(predmet);
-            File f = new File("src/main/resources/"+predmet+".txt");
+            File f = new File("C:\\StudyBudy\\"+predmet+".txt");
             f.delete();
             System.out.println(f.getAbsolutePath());
 

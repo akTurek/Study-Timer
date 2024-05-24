@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -14,37 +13,41 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.stimer.StartController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #66cc66;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.stimer.StartController">
    <children>
-      <VBox minWidth="130.0" prefHeight="400.0" prefWidth="170.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Predmeti" textAlignment="CENTER">
+      <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #006600;">
+        <items>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #FBFBFB;" text="PREDMETI">
                <font>
                   <Font name="Arial Nova" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="10.0" top="3.0" />
-               </VBox.margin>
-            </Text>
-            <ToolBar prefHeight="40.0" prefWidth="224.0">
-               <items>
-                  <Button fx:id="addNewPredmetButton" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" />
-                  <Button fx:id="deletePredmetButton" mnemonicParsing="false" onAction="#dellPredmet" text="DEL" />
-                  <Button fx:id="sceneChangeButton" mnemonicParsing="false" onAction="#sceneChangeToPredmet" text="&gt;" />
-               </items>
-            </ToolBar>
-            <TextField fx:id="addNewPredmetField" prefHeight="26.0" prefWidth="166.0" />
-            <ListView fx:id="listView" prefHeight="332.0" prefWidth="223.0" />
+               </font></Text>
+          <Button fx:id="addNewPredmetButton" mnemonicParsing="false" onAction="#addNewPredmet" text="+" />
+        </items>
+      </ToolBar>
+      <HBox prefHeight="419.0" prefWidth="600.0" style="-fx-background-color: #FBFBFB;">
+         <children>
+            <VBox prefHeight="364.0" prefWidth="154.0" style="-fx-background-color: #66cc66;">
+               <children>
+                  <TextField fx:id="addNewPredmetField" disable="true" onAction="#addNewPredmet" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: #FBFBFB;" visible="false" />
+                  <ListView fx:id="listView" prefHeight="400.0" prefWidth="154.0" style="-fx-background-color: #66cc66;" />
+               </children>
+            </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <PieChart fx:id="pieChart" style="-fx-background-color: #FBFBFB;" />
+               </children></HBox>
+            <HBox prefHeight="364.0" prefWidth="246.0">
+               <children>
+                  <BarChart fx:id="barChart" prefHeight="364.0" prefWidth="233.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children></HBox>
          </children>
-      </VBox>
-      <PieChart fx:id="pieChart" prefHeight="400.0" prefWidth="221.0" />
-      <BarChart fx:id="barChart">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
+      </HBox>
    </children>
-</HBox>
+</VBox>

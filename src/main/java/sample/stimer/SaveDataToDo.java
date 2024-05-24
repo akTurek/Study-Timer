@@ -3,12 +3,15 @@ package sample.stimer;
 import javafx.scene.control.ListView;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
+
+
 
 public class SaveDataToDo {
 
     public static void newOpravilo(String predmet, String opravilo, ListView<String> toDdListView) {
-        File f = new File("src/main/resources/"+predmet+".txt");
+        File f = new File("C:\\StudyBudy\\"+predmet+".txt");
 
         try {
             BufferedReader file = new BufferedReader(new FileReader(f));
@@ -38,7 +41,7 @@ public class SaveDataToDo {
     }
 
     public static void deleteOpravilo(String predmet, String opravilo) {
-        File f = new File("src/main/resources/"+predmet+".txt");
+        File f = new File("C:\\StudyBudy\\"+predmet+".txt");
         System.out.println("backend oprvilo "+ opravilo);
 
         try {
@@ -67,7 +70,7 @@ public class SaveDataToDo {
 
     public static String[] arrayOpravil(String predmet) {
         ArrayList<String> arrayListOpravil = new ArrayList<>();
-        File f = new File("src/main/resources/"+predmet+".txt");
+        File f = new File("C:\\StudyBudy\\"+predmet+".txt");
         try {
             BufferedReader file = new BufferedReader(new FileReader(f));
             String line;
@@ -94,7 +97,7 @@ public class SaveDataToDo {
 
         int [] opravljeniNeopravljeni =new int[]{0,0};
         for (String element : arrayListPredmetov) {
-            File f = new File("src/main/resources/"+element+".txt");
+            File f = new File("C:\\StudyBudy\\"+element+".txt");
             try {
                 BufferedReader file = new BufferedReader(new FileReader(f));
                 String line;
@@ -119,10 +122,12 @@ public class SaveDataToDo {
     }
 
 
+
+
     public static void checkUncheck (String predmet, String currentOpravilo) {
         String opravilo = currentOpravilo.replaceAll("[☐☑] ","");
-        System.out.println("backend "+opravilo);
-        File f = new File("src/main/resources/"+predmet+".txt");
+        //System.out.println("backend "+opravilo);
+        File f = new File("C:\\StudyBudy\\"+predmet+".txt");
 
         try {
             BufferedReader file = new BufferedReader(new FileReader(f));
@@ -134,10 +139,10 @@ public class SaveDataToDo {
                     String[] newLineArray = line.split("@");
                     if (newLineArray[1].equals("1")) {
                         line = opravilo+"@0";
-                        System.out.println("dal na 0");
+                        //System.out.println("dal na 0");
                     } else {
                         line = opravilo+"@1";
-                        System.out.println("dal na 1");
+                        //System.out.println("dal na 1");
                     }
                 }
                 inputBuffer.append(line);

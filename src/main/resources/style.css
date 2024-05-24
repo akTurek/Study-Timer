@@ -1,0 +1,76 @@
+.list-view .list-cell:filled:selected {
+    -fx-background-color: #99ff99;
+    -fx-text-fill: black;
+    -fx-background-insets: 0;
+    -fx-padding: 0 0 0 0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+.list-view .list-cell:filled:focused {
+    -fx-background-color: #99ff99;
+    -fx-text-fill: black;
+    -fx-background-insets: 0;
+    -fx-padding: 0 0 0 0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #ccff99;
+    -fx-text-fill: Black;
+}
+
+.list-view {
+    -fx-control-inner-background: #66cc66;
+    -fx-border-color: transparent;
+}
+
+.list-view .virtual-flow {
+    -fx-spacing: 0;
+}
+
+/* Prvi kolaček bo zelene barve */
+.default-color0.chart-pie {
+    -fx-pie-color: green;
+}
+
+/* Vsi ostali kolački bodo rdeče barve */
+.default-color1.chart-pie {
+    -fx-pie-color: red;
+}
+/* Prvi kolaček bo zelene barve */
+.default-color2.chart-pie {
+    -fx-pie-color: green;
+}
+
+/* Vsi ostali kolački bodo rdeče barve */
+.default-color3.chart-pie {
+    -fx-pie-color: red;
+}
+
+.default-color4.chart-pie {
+    -fx-pie-color: green;
+}
+
+/* Vsi ostali kolački bodo rdeče barve */
+.default-color5.chart-pie {
+    -fx-pie-color: red;
+}
+
+.button{
+    -fx-background-color:#FBFBFB;
+}
+
+.list-cell, .chart {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+}
+
+/* Če želite uporabiti drugačen videz pisave za graf, jo lahko določite tukaj */
+.chart {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px; /* Primer drugačne velikosti pisave za graf */
+}
+
