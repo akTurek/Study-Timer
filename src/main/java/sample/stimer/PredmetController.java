@@ -100,6 +100,11 @@ public class PredmetController {
     private void dellPredmet() {
 
         db.delete(currentPredmet);
+        try {
+            sceneChangeToStart();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -167,13 +172,14 @@ public class PredmetController {
     }
 
     @FXML
-    private void sceneChangeToStart(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("start-view.fxml"));
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("style.css");
-        stage.setScene(scene);
-        stage.show();
+    private void sceneChangeToStart() throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("start-view.fxml"));
+            Stage stage = (Stage) toDdListView.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add("style.css");
+            stage.setScene(scene);
+            stage.show();
+
     }
 
     @FXML

@@ -162,7 +162,7 @@ public class StartController {
         };
 
         pieChart.getData().addAll(podatkiGrafa);
-        pieChart.setTitle(napredek);
+        pieChart.setTitle("Task done: "+napredek);
         pieChart.setLabelsVisible(false);
 
     }

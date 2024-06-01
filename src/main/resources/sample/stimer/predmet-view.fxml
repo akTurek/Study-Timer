@@ -22,7 +22,7 @@
                         <Font name="Arial Nova" size="24.0" />
                      </font>
                   </Text>
-                  <Button fx:id="delPredmet" mnemonicParsing="false" onAction="#dellPredmet" text="DEL" />
+                  <Button fx:id="delPredmet" mnemonicParsing="false" onAction="#dellPredmet" text="x" />
                </items>
             </ToolBar>
             <HBox prefHeight="245.0" prefWidth="430.0" style="-fx-background-color: #ccff99;">
